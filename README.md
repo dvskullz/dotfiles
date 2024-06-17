@@ -1,2 +1,2 @@
 # dotfiles
-akhibara's dotfiles
+d's dotfiles
