@@ -1,3 +1,3 @@
-# dotfiles
+# d's dotfiles
 d's dotfiles
-.fonts JetBrainMono Noto fonts
+.fonts JetBrainMono Nerd fonts
