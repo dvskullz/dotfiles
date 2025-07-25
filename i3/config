@@ -38,10 +38,15 @@ exec --no-startup-id blueman-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ +5% && ~/.config/dunst/dunstify/sink_notif'
+bindsym XF86AudioLowerVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ -5% && ~/.config/dunst/dunstify/sink_notif'
+bindsym XF86AudioMute exec --no-startup-id bash -c 'pactl set-sink-mute @DEFAULT_SINK@ toggle && ~/.config/dunst/dunstify/sink_notif'
+bindsym XF86AudioMicMute exec --no-startup-id bash -c 'pactl set-source-mute @DEFAULT_SOURCE@ toggle && ~/.config/dunst/dunstify/mic_notif'
+
+# # bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status && ~/.config/dunst/dunstify/sink_notif &
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status && ~/.config/dunst/dunstify/sink_notif &
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status && ~/.config/dunst/dunstify/sink_notif &
+# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status && ~/.config/dunst/dunstify/sink_notif &
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -116,8 +121,8 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:Web"
-set $ws2 "2:Term"
+set $ws1 "1"
+set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
@@ -186,13 +191,13 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
+# # finds out, if available)
+# bar {
     
            
            
-        status_command i3status
-}
+#         status_command i3status
+# }
 
 # Screenshots
 exec --no-startup-id flameshot
@@ -255,7 +260,7 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 
-exec_always feh --bg-scale /home/d/Downloads/art.jpg
+exec_always feh --bg-scale /home/d/Downloads/12.png
 
 
 # Sreen brightness controls
@@ -263,8 +268,10 @@ exec_always feh --bg-scale /home/d/Downloads/art.jpg
 # bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 # bindsym XF86MonBrightnessUp exec light -A 10
 # bindsym XF86MonBrightnessDown exec light -U 10
-bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
-bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+# bindsym XF86MonBrightnessDown exec brightnessctl s 5%- 
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 5%- && ~/.config/dunst/dunstify/br_notif &
+# bindsym XF86MonBrightnessUp exec brightnessctl s +5% ~/.config/dunst/dunstify/br_notif &
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s +5% && ~/.config/dunst/dunstify/br_notif &
 
 
 # application rules
@@ -272,17 +279,19 @@ bindsym XF86MonBrightnessUp exec brightnessctl s +5%
                 assign [class="Firefox"] → 1
 
 # autolock
-exec --no-startup-id xautolock -time 1 -locker betterlockscreen -l
+# exec --no-startup-id xautolock -time 1 -locker betterlockscreen -l
 #bindsym Shift+$mod+P exec i3lock -c 000000 && systemctl suspend
-#bindsym $mod+l exec i3lock -c 000000
-bindsym $mod+l exec betterlockscreen -l dim
+bindsym $mod+l exec --no-startup-id ~/.config/scripts/i3lock_launch &
+# bindsym $mod+l exec betterlockscreen -l dim
 
 exec --no-startup-id picom 	
+exec --no-startup-id polybar
+exec --no-startup-id dunst
 exec --no-startup-id redshift
 
 
 #exec --no-startup-id autotiling
-exec_always autotiling -w 1 3 5 7 9
+exec_always autotiling 
 bindsym $mod+x exec --no-startup-id code
 bindsym $mod+z exec --no-startup-id emacs
 
@@ -297,6 +306,11 @@ floating_modifier $mod
 bindsym $mod+d exec rofi -show drun -lines 20 -eh 1.3 -opacity "0" -bw 0 -font "JetBrainsMono Nerd Mono "
 #bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-3/launcher.sh
 
+#each successive restart 
+exec_always --no-startup-id ~/.config/i3/restarted_notif.sh &
+
+
+exec --no-startup-id ~/.config/dunst/dunstify/updates_notif &
 
 
 

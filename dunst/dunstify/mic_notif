@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+source /etc/os-release 2>/dev/null
+
+mic_name="${1:-@DEFAULT_SOURCE@}"
+icon_theme_path="/home/$USER/.local/share/icons/Gruvbox-Material-Dark-OneColored"
+bar_color="#d4be98"
+tag="string:x-dunst-stack-tag:mic"
+
+muted=$(pactl get-source-mute "$mic_name" | awk '{print $2}')
+icon_path="$icon_theme_path/16x16/panel/"
+
+if [[ "$muted" == "yes" ]]; then
+    icon="${icon_path}microphone-sensitivity-muted.svg"
+    msg="Microphone muted"
+else
+    icon="${icon_path}microphone-sensitivity-high.svg"
+    msg="Microphone active"
+fi
+
+dunstify -h "$tag" -h string:hlcolor:"$bar_color" -i "$icon" "Mic Status" "$msg"

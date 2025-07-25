@@ -1,0 +1,16 @@
+#!/bin/bash
+
+icon_theme_path="/home/$USER/.local/share/icons/Gruvbox-Material-Dark-OneColored"
+icon="$icon_theme_path/16x16/actions/brightnesssettings.svg"
+tag="string:x-dunst-stack-tag:brightness"
+bar_color="#d4be98"
+
+val=$(brightnessctl g)
+max=$(brightnessctl max)
+percent=$((val * 100 / max))
+
+dunstify -h int:value:$percent \
+    -h string:hlcolor:$bar_color \
+    -h $tag \
+    -i "$icon" \
+    "Brightness" "${percent}%"

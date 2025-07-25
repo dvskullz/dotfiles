@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Icon and tag
+# icon="$HOME/.config/dunst/icons/arch-linux.svg"
+tag="string:x-dunst-stack-tag:login"
+arch_logo=""
+
+# Get a short fortune, wrapped to 60 characters
+quote=$(fortune -s )
+
+# Send notification
+dunstify -a "login-quote" \
+         -u low \
+         -t 10000 \
+         -i "$icon" \
+         -h "$tag" \
+         -h string:markup:strip \
+         "$arch_logo  Fortune says:" \
+         "$quote"

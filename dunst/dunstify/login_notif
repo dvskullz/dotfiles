@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+icon="$HOME/.config/dunst/icons/arch-linux.svg"
+tag="string:x-dunst-stack-tag:login"
+
+# Arch logo (optional)
+arch_logo=""
+
+# Message pool
+messages=(
+    "Boot complete."
+    "All systems nominal."
+    "Welcome back, $USER."
+    "Access granted: $USER"
+    "Environment initialized."
+    # "Minimalism in motion."
+    "Arch is art."
+    "Session authenticated."
+    "Root presence confirmed."
+    "Tiling > Floating."
+)
+
+# Pick a random message
+message="${messages[$RANDOM % ${#messages[@]}]}"
+
+# Send notification with Dunst
+dunstify -u low -h "$tag" -i "$icon" "$arch_logo  $message"
